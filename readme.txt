@@ -1,1 +1,1 @@
-This Mura CMS plugin that check site links.
+This Mura CMS plugin helps you review your site for broken links.
