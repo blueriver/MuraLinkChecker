@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --->
-<cfcomponent>
+<cfcomponent output="false" extends="mura.cfobject">
 	<cffunction name="testLink" access="public" output="no" returntype="boolean">
 		<cfargument name="link" required="yes">
 		<cfset var tempLink = "">
