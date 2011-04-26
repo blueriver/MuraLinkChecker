@@ -1,0 +1,53 @@
+/* Copyright 2011 Blue River Interactive
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * */
+ 
+/* @override http://mura:8500/5.3/plugins/LinkCheck_3/css/style.css */
+
+#lc-nodeList h3 {
+		
+}
+
+#lc-nodeList dl {
+	
+}
+
+#lc-nodeList dt {
+	font-size: 14px;
+	margin-bottom: .5em;
+}
+
+#lc-nodeList dd {
+	font-size: 12px;
+	margin: .5em 0 .5em 1em;
+}
+
+img.percentImage {
+ background: white url(../images/percentImage_back.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+.editor_field {
+	margin: -3px 2px 0 0;
+	width: 600px;
+	/*vertical-align: middle;
+	background-color: #fff;
+	border: 1px solid #DBDBDB;
+	padding: 3px;*/
+}
+
+#cPlugins form {
+	margin: 0;	
+}
