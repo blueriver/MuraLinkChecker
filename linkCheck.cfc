@@ -50,7 +50,7 @@
 					<cfset tempLink = link>
 				</cfif>
 				<cfhttp method="head" url="#tempLink#" timeout="1" />
-				<cfif cfhttp.status_code eq "404">
+				<cfif Left(cfhttp.statusCode, 3) eq "404">
 					<cfset returnVar = true>
 				</cfif>
 				<cfcatch>
