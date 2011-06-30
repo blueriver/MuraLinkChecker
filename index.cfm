@@ -30,7 +30,7 @@
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
 		<script language="javascript" type="text/javascript" src="js/progress.js"></script>
 		<script language="javascript" type="text/javascript" src="js/scriptaculous.js"></script>
-		<h2>#request.pluginConfig.getName()#</h2>
+		<h2>#pluginConfig.getName()#</h2>
 	</cfoutput>
 </cfsavecontent>
 
@@ -44,11 +44,11 @@
 				<cfinclude template="report.html">
 			</cfsavecontent>
 		</cfif>
-		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=request.pluginConfig.getName())#</cfoutput>
+		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=pluginConfig.getName())#</cfoutput>
 	</cfcase>
 	<cfcase value="check">
 		<cfset body = "<script>display('element1', 0, 1);</script>">
-		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=request.pluginConfig.getName())#</cfoutput>
+		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=pluginConfig.getName())#</cfoutput>
 		<cfflush interval="1">
 		<cfset oLC.checkSite()>
 	</cfcase>
