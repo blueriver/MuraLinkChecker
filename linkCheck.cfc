@@ -50,7 +50,7 @@
 					<cfset tempLink = link>
 				</cfif>
 				<cfhttp method="head" url="#tempLink#" timeout="1" />
-				<cfif Left(cfhttp.statusCode, 3) eq "404">
+				<cfif findNoCase("404",cfhttp.statusCode) or findNoCase("Connection Failure",cfhttp.statusCode)>
 					<cfset returnVar = true>
 				</cfif>
 				<cfcatch>
@@ -85,7 +85,7 @@
 		<cfset var a = arrayNew(1)>
 		<cfset var link = "">
 		<cfset var matches = reMatchNoCase("(<a.*?>.*?</a>)|(<img.*?>)", arguments.content)>
-		
+
 		<cfloop from="1" to="#arrayLen(matches)#" index="i">
 			<cfset pos = 0>
 			<cfset continue = true>
@@ -118,7 +118,7 @@
 			display('element1', 0, 1);
 		</script>
 		--->
-		
+
 		<cfset brokenLinkCount = 0>
 		<cfset list = arrayNew(1)>
 		<cfloop query="rsContent">
