@@ -49,7 +49,17 @@
 				<cfelse>
 					<cfset tempLink = link>
 				</cfif>
-				<cfhttp method="head" url="#tempLink#" timeout="1" />
+				<cfif len(application.configBean.getProxyServer())>
+					<cfhttp url="#tempLink#"
+					method="head"
+					timeout="1"
+					proxyUser="#application.configBean.getProxyUser()#" 
+					proxyPassword="#application.configBean.getProxyPassword()#"
+					proxyServer="#application.configBean.getProxyServer()#" 
+					proxyPort="#application.configBean.getProxyPort()#">
+				<cfelse>
+					<cfhttp method="head" url="#tempLink#" timeout="1" />
+				</cfif>
 				<cfif findNoCase("404",cfhttp.statusCode) or findNoCase("Connection Failure",cfhttp.statusCode)>
 					<cfset returnVar = true>
 				</cfif>
