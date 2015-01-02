@@ -28,8 +28,8 @@
 <cfsavecontent variable="header">
 	<cfoutput>
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
-		<script language="javascript" type="text/javascript" src="js/progress.js"></script>
-		<script language="javascript" type="text/javascript" src="js/scriptaculous.js"></script>
+		<script language="javascript" type="text/javascript" src="js/jquery.progress.js"></script>
+		<script language="javascript" type="text/javascript" src="js/jquery.editinplace.js"></script>
 		<h2>#pluginConfig.getName()#</h2>
 	</cfoutput>
 </cfsavecontent>
@@ -47,6 +47,7 @@
 		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=pluginConfig.getName())#</cfoutput>
 	</cfcase>
 	<cfcase value="check">
+		<cfsetting requestTimeout="600">
 		<cfset body = "<script>display('element1', 0, 1);</script>">
 		<cfoutput>#application.pluginManager.renderAdminTemplate(body=header & body, pageTitle=pluginConfig.getName())#</cfoutput>
 		<cfflush interval="1">

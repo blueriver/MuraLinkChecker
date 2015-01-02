@@ -19,8 +19,8 @@
 		<cfset var tempLink = "">
 		<cfset var tempList = "">
 		<cfset var i = "">
-		<cfset returnVar = false>
-		
+		<cfset var returnVar = false>
+
 		<cfif link contains "/#session.siteID#/index.cfm/" or (application.configBean.getStub() neq "" and link contains application.configBean.getStub())>
 			<!--- check local links --->
 			<cfset tempList = replaceNoCase(link, '/#session.siteID#/index.cfm/', '')>
@@ -30,13 +30,13 @@
 					<cfset tempLink = tempLink & i & '/'>
 				</cfloop>
 				<cfset tempLink = left(tempLink, len(tempLink) - 1)>
-				
+
 				<cfquery name="rsCheck" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-					select contentID from tcontent 
+					select contentID from tcontent
 					where active = 1 and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.siteid#">
 					and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#tempLink#">
 				</cfquery>
-				
+
 				<cfif rsCheck.recordCount eq 0>
 					<cfset returnVar = true>
 				</cfif>
@@ -53,9 +53,9 @@
 					<cfhttp url="#tempLink#"
 					method="head"
 					timeout="1"
-					proxyUser="#application.configBean.getProxyUser()#" 
+					proxyUser="#application.configBean.getProxyUser()#"
 					proxyPassword="#application.configBean.getProxyPassword()#"
-					proxyServer="#application.configBean.getProxyServer()#" 
+					proxyServer="#application.configBean.getProxyServer()#"
 					proxyPort="#application.configBean.getProxyPort()#">
 				<cfelse>
 					<cfhttp method="head" url="#tempLink#" timeout="1" />
@@ -68,25 +68,25 @@
 				</cfcatch>
 			</cftry>
 		</cfif>
-		
+
 		<cfreturn returnVar>
 	</cffunction>
-	
+
 	<cffunction name="parseLink" access="public" output="no" returntype="string">
 		<cfargument name="s" required="yes">
 		<cfargument name="pos" required="yes">
 		<cfset var returnVar = "">
 		<cfset var start = 0>
 		<cfset var end = 0>
-		
+
 		<cfset start = refind("(""|')", arguments.s, arguments.pos) + 1>
 		<cfset end = find(mid(arguments.s, start - 1, 1), arguments.s, start)>
-		
+
 		<cfset returnVar = mid(arguments.s, start, end - start)>
-		
+
 		<cfreturn returnVar>
 	</cffunction>
-	
+
 	<cffunction name="findLinks" access="public" output="no" returntype="array">
 		<cfargument name="find" required="yes">
 		<cfargument name="content" required="yes">
@@ -105,23 +105,23 @@
 					<cfset link = parseLink(matches[i], pos)>
 					<cfif testLink(link)>
 						<cfset arrayAppend(a, link)>
-					</cfif>			
+					</cfif>
 				<cfelse>
 					<cfset continue = false>
 				</cfif>
 			</cfloop>
-		</cfloop>	
-			
+		</cfloop>
+
 		<cfreturn a>
 	</cffunction>
-	
+
 	<cffunction name="checkSite" access="public" output="yes" returntype="void">
 		<cfquery name="rsContent" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			select contentID, contentHistID, siteid, parentid, moduleid, type, title, summary, body from tcontent 
+			select contentID, contentHistID, siteid, parentid, moduleid, type, title, summary, body from tcontent
 			where active = 1 and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.siteid#">
 			<!---limit 250--->
 		</cfquery>
-		
+
 		<!---
 		<script>
 			//document.getElementById('siteCheckStatus').innerHTML = '0% Complete';
@@ -129,8 +129,8 @@
 		</script>
 		--->
 
-		<cfset brokenLinkCount = 0>
-		<cfset list = arrayNew(1)>
+		<cfset var brokenLinkCount = 0>
+		<cfset var list = arrayNew(1)>
 		<cfloop query="rsContent">
 			<cfset s = structNew()>
 			<cfset s.links = arrayNew(1)>
@@ -142,10 +142,10 @@
 			<cfset s.parentid = parentid>
 			<cfset s.moduleid = moduleid>
 			<cfset s.title = title>
-	
+
 			<cfset s.links = findLinks('href', summary & body)>
 			<cfset s.imgs = findLinks('src', summary & body)>
-			
+
 			<cfif arrayLen(s.links) gt 0 or arrayLen(s.imgs) gt 0>
 				<cfset arrayAppend(list, s)>
 				<cfset brokenLinkCount = brokenLinkCount + arrayLen(s.links) + arrayLen(s.imgs)>
@@ -169,18 +169,20 @@
 						<cfset id = createUUID()>
 						<dd id="#id#">#list[i].links[j]#</dd>
 						<script type="text/javascript">
-							new Ajax.InPlaceEditor('#id#', 'saveLink.cfm', {
-								callback: function(form, value) { return 'siteid=#list[i].siteid#&contentHistID=#list[i].contenthistid#&findMe=#urlEncodedFormat(list[i].links[j])#&replaceWith=' + encodeURIComponent(value) }
-							});
+							$('###id#').editInPlace({
+									url: "./saveLink.cfm",
+									params : "editorID=#id#&siteid=#list[i].siteid#&contentHistID=#list[i].contenthistid#"
+								});
 						</script>
 					</cfloop>
 					<cfloop from="1" to="#arrayLen(list[i].imgs)#" index="k">
 						<cfset id = createUUID()>
 						<dd id="#id#">#list[i].imgs[k]#</dd>
 						<script type="text/javascript">
-							new Ajax.InPlaceEditor('#id#', 'saveLink.cfm', {
-								callback: function(form, value) { return 'siteid=#list[i].siteid#&contentHistID=#list[i].contenthistid#&findMe=#urlEncodedFormat(list[i].imgs[k])#&replaceWith=' + encodeURIComponent(value) }
-							});
+							$('###id#').editInPlace({
+									url: "./saveLink.cfm",
+									params : "editorID=#id#&siteid=#list[i].siteid#&contentHistID=#list[i].contenthistid#"
+								});
 						</script>
 					</cfloop>
 				</cfloop>
@@ -188,17 +190,17 @@
 			</cfoutput>
 		</div>
 		</cfsavecontent>
-		
+
 		<cfif arrayLen(list) eq 0>
 			<cfset body = '<p class="success">No broken links found.</p>'>
 		</cfif>
-	
+
 		<cffile action="write" file="#expandPath('report.html')#" output="#body#">
-		
+
 		<script>
 			window.location = 'index.cfm?gfa=show';
 		</script>
-	
+
 	</cffunction>
-	
+
 </cfcomponent>
