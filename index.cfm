@@ -14,6 +14,9 @@
    limitations under the License.
 --->
 <cfinclude template="plugin/config.cfm">
+<cfif pluginConfig.getSetting('disableTimeout')>
+	<cfsetting requesttimeout="0">
+</cfif>
 <cfset myRequest = structNew()>
 <cfset structAppend(myRequest, url)>
 <cfset structAppend(myRequest, form)>
@@ -29,6 +32,7 @@
 	<cfoutput>
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
 		<script language="javascript" type="text/javascript" src="js/progress.js"></script>
+		<script language="javascript" type="text/javascript" src="js/prototype.js"></script>
 		<script language="javascript" type="text/javascript" src="js/scriptaculous.js"></script>
 		<h2>#pluginConfig.getName()#</h2>
 	</cfoutput>

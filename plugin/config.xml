@@ -22,7 +22,23 @@
 	<provider>Blue River Interactive Group</provider>
 	<providerURL>http://www.blueriver.com</providerURL>
 	<category>Application</category>
-	<settings></settings>
+	<settings>
+			
+			<setting>
+				<name>disableTimeout</name>
+				<label>Disable request timeout</label>
+				<hint>Disables the site timeout when checking site for broken links. Not recommended for production sites.</hint>
+				<type>radioGroup</type>
+				<required>true</required>
+				<validation>none</validation>
+				<regex></regex>
+				<message></message>
+				<defaultvalue>0</defaultvalue>
+				<optionlist>1^0</optionlist>
+				<optionlabellist>Yes^No</optionlabellist>
+			</setting>
+			
+	</settings>
 	
 	<eventHandlers/>
 	<displayobjects location="global" />

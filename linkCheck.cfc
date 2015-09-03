@@ -81,9 +81,12 @@
 		
 		<cfset start = refind("(""|')", arguments.s, arguments.pos) + 1>
 		<cfset end = find(mid(arguments.s, start - 1, 1), arguments.s, start)>
-		
+		<cftry>
 		<cfset returnVar = mid(arguments.s, start, end - start)>
-		
+			<cfcatch>
+			
+			</cfcatch>
+		</cftry>
 		<cfreturn returnVar>
 	</cffunction>
 	
@@ -102,10 +105,15 @@
 			<cfloop condition="#continue#">
 				<cfset pos = find(arguments.find, matches[i], pos + 1)>
 				<cfif pos gt 0>
-					<cfset link = parseLink(matches[i], pos)>
-					<cfif testLink(link)>
-						<cfset arrayAppend(a, link)>
-					</cfif>			
+					<cftry>
+						<cfset link = parseLink(matches[i], pos)>
+						<cfif testLink(link)>
+							<cfset arrayAppend(a, link)>
+						</cfif>
+							<cfcatch type="any">
+								<cflog file="linkChecker" text="matches[i]">
+							</cfcatch>
+					</cftry>			
 				<cfelse>
 					<cfset continue = false>
 				</cfif>
@@ -164,7 +172,7 @@
 				<h3>Your site has <strong>#brokenLinkCount#</strong> broken link<cfif brokenLinkCount neq 1>s</cfif> on <strong>#arrayLen(list)#</strong> page<cfif arrayLen(list) neq 1>s</cfif>:</h3>
 				<dl id="lc-nodeList">
 				<cfloop from="1" to="#arrayLen(list)#" index="i">
-					<dt class="divide"><a href="/admin/index.cfm?fuseaction=cArch.edit&siteid=#list[i].siteid#&contentid=#list[i].contentid#&topid=00000000000000000000000000000000001&type=#list[i].type#&parentid=#list[i].parentID#&moduleid=#list[i].moduleID#">#list[i].title#</a></dt>
+					<dt class="divide"><a href="/admin/index.cfm?muraAction=cArch.edit&siteid=#list[i].siteid#&contentid=#list[i].contentid#&topid=00000000000000000000000000000000001&type=#list[i].type#&parentid=#list[i].parentID#&moduleid=#list[i].moduleID#">#list[i].title#</a></dt>
 					<cfloop from="1" to="#arrayLen(list[i].links)#" index="j">
 						<cfset id = createUUID()>
 						<dd id="#id#">#list[i].links[j]#</dd>
