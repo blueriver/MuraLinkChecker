@@ -14,6 +14,9 @@
    limitations under the License.
 --->
 <cfinclude template="plugin/config.cfm">
+<cfif pluginConfig.getSetting('disableTimeout')>
+	<cfsetting requesttimeout="0">
+</cfif>
 <cfset myRequest = structNew()>
 <cfset structAppend(myRequest, url)>
 <cfset structAppend(myRequest, form)>
