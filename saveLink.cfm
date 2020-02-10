@@ -20,12 +20,12 @@
 	<cfargument name="replace" type="string" default="" required="true">
 	<cfargument name="siteID" type="string" default="" required="true">
 	<cfargument name="contentHistID" type="string" default="" required="true">
-	
+
 	<cfset bean = application.configBean.getBean('content').loadBy(contentHistID=arguments.contentHistID, siteID=arguments.siteID)>
 	<cfset bean.setBody(replaceNoCase(bean.getBody(),"#arguments.find#", "#arguments.replace#", "ALL"))>
 	<cfset bean.setSummary(replaceNoCase(bean.getSummary(),"#arguments.find#", "#arguments.replace#", "ALL"))>
 	<cfset bean.save()>
-	
+
 </cffunction>
 
 <cffunction name="updateReport" returntype="void" output="false">
@@ -37,10 +37,10 @@
 	<cfset end = 0>
 	<cfset fileStart = "">
 	<cfset fileEnd = "">
-	
+
 	<cffile action="read" file="#expandPath('report.html')#" variable="theReport">
 	<cfset start = findNoCase('<dd id="#editorID#">', theReport)>
-	
+
 	<cfif start gt 0>
 		<cfset end = findNoCase('</dd>', theReport, start) + 5>
 		<cfset fileStart = mid(theReport, 1, start - 1)>
@@ -51,13 +51,13 @@
 </cffunction>
 
 
-<cfparam name="siteID" default="">
-<cfparam name="contentHistID" default="">
-<cfparam name="findMe" default="">
-<cfparam name="replaceWith" default="">
-<cfparam name="editorID" default="">
+<cfparam name="form.siteID" default="">
+<cfparam name="form.contentHistID" default="">
+<cfparam name="form.original_value" default="">
+<cfparam name="form.update_value" default="">
+<cfparam name="form.editorID" default="">
 
-<cfset findAndReplace(findMe, replaceWith, siteID, contentHistID)>
-<cfset updateReport(editorID, findMe, replaceWith)>
-	
-</cfsilent><cfoutput>#replaceWith#</cfoutput>
+<cfset findAndReplace(form.original_value, form.update_value, form.siteID, form.contentHistID)>
+<cfset updateReport(form.editorID, form.original_value, form.update_value)>
+
+</cfsilent><cfoutput>#form.update_value#</cfoutput>
